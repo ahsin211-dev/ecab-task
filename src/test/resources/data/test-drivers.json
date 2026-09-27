@@ -1,0 +1,5 @@
+[
+  { "id": "near", "x": 1.0, "y": 0.0, "available": true },
+  { "id": "far", "x": 9.0, "y": 0.0, "available": true },
+  { "id": "offline", "x": 0.5, "y": 0.0, "available": false }
+]
