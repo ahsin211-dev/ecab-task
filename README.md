@@ -23,6 +23,13 @@ repositories through `DriverService`, so seeded drivers follow the same rules as
 Each entry is `{ "id", "x", "y", "available" }`. Point `app.seed.drivers-file` at another file,
 or set `app.seed.enabled=false` to start empty.
 
+## API docs (Swagger)
+
+With the app running:
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+
 ## API
 
 | Method | Path | Body / params | Success | Errors |
