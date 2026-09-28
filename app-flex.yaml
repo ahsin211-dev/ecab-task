@@ -1,0 +1,24 @@
+# App Engine FLEXIBLE. Builds the Dockerfile in this directory:
+#   gcloud app deploy app-flex.yaml
+runtime: custom
+env: flex
+service: default
+
+# All data lives in memory: exactly one instance (see DEPLOY.md).
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 1
+  disk_size_gb: 10
+
+env_variables:
+  SPRING_PROFILES_ACTIVE: prod
+
+# Flex's default check paths do not exist in this app; use a cheap read endpoint.
+liveness_check:
+  path: "/api/v1/drivers"
+readiness_check:
+  path: "/api/v1/drivers"
+  app_start_timeout_sec: 300

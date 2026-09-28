@@ -1,0 +1,9 @@
+# Files uploaded by `gcloud app deploy app-flex.yaml` (Flexible builds the Dockerfile remotely).
+# Standard deploys only upload the jar, so this file does not affect them.
+*
+!pom.xml
+!src/
+!src/**
+!Dockerfile
+!.dockerignore
+!app-flex.yaml

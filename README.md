@@ -16,6 +16,26 @@ mvn spring-boot:run
 
 The API listens on `http://localhost:8080`.
 
+### With Docker
+
+No local JDK or Maven needed.
+
+```bash
+docker compose up --build        # build and run on http://localhost:8080
+BACKEND_PORT=9090 docker compose up --build   # if 8080 is taken
+docker compose down
+```
+
+To deploy, build and push the image; any container platform can run it:
+
+```bash
+docker build -t <registry>/ride-matching-service:<tag> .
+docker push <registry>/ride-matching-service:<tag>
+docker run -p 8080:8080 <registry>/ride-matching-service:<tag>
+```
+
+Profiles (`local` / `prod`), Docker and Google App Engine deployment are covered step by step in [DEPLOY.md](DEPLOY.md).
+
 ### Initial data
 
 On startup `SeedDataConfig` loads `src/main/resources/data/drivers.json` into the in-memory
@@ -88,7 +108,7 @@ Every error has the same shape:
 ```
 api  ──►  api.impl  ──►  service (interfaces)  ──►  service.impl
                                                         │
-                                     ┌──────────────────┼──────────────────┐
+                                     ┌────────────-─────┼──────────────────┐
                                      ▼                  ▼                  ▼
                                repository          matching            domain
                           (DriverRepository,   (DriverMatchingStrategy,  (Driver, Ride,
@@ -158,10 +178,6 @@ POST /api/v1/rides → RideControllerImpl → RideServiceImpl.requestRide
 | A7 | Only the requesting rider can complete a ride (403 otherwise). | The brief says "the rider" completes it. |
 | A8 | Equal distances are ordered by driver ID. | Deterministic results and tests. |
 | A9 | "No driver available" is 409 Conflict. | Judgment call; 503 is also defensible. |
-| A10 | `limit` defaults to 5 and must be 1–100. | Bounded responses. |
-| A11 | Nearest-driver results are a weakly consistent snapshot. | A listed driver may be taken a moment later; that is honest for a read. |
-| A12 | Services are interface + `*Impl` classes. | Project convention requested for this codebase. |
-
 ## Trade-offs and next steps
 
 - **O(n log n) scan per request.** Fine for an in-memory fleet; a grid, geohash or k-d tree strategy can sit behind `DriverMatchingStrategy` for large fleets.

@@ -1,0 +1,13 @@
+# USING: App Engine STANDARD. Deploy the built jar
+#   gcloud app deploy target/ride-matching-service-0.0.1-SNAPSHOT.jar --appyaml=src/main/appengine/app.yaml
+runtime: java21
+service: default
+
+# B2 = 768 MB, good for this service. Basic/manual scaling needs a B* class.
+instance_class: B2
+
+manual_scaling:
+  instances: 1
+
+env_variables:
+  SPRING_PROFILES_ACTIVE: prod
